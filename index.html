@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Демо</title>
+<script>
+  // Куда ведут все QR. Сменился туннель — меняем только эту строку.
+  // Демо лежит — ставим "fallback.html" (относительный путь), QR покажут заглушку.
+  const BASE = "https://CHANGE-ME.ngrok-free.app";
+
+  // Сценарий каждого QR: ?s=<ключ> → путь в приложении.
+  // Неизвестный или пустой ключ ведёт на главную.
+  const routes = {
+    "1": "/join/altai",
+    "2": "/login",
+    "3": "/",
+  };
+
+  const id = new URLSearchParams(location.search).get("s");
+  const path = routes[id] ?? "/";
+  const target = BASE.startsWith("http") ? BASE.replace(/\/$/, "") + path : BASE;
+  location.replace(target);
+</script>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center;
+         font: 16px/1.4 system-ui, sans-serif; background: #fff; color: #222; }
+  @media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+  <p>Открываем демо… <noscript>Включите JavaScript.</noscript></p>
+</body>
+</html>
