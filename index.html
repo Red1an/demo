@@ -11,20 +11,25 @@
   // Запасной: "https://enduring-device-mocha.ngrok-free.dev" (ngrok, со страницей-предупреждением)
   const BASE = "https://prakser.taila8d52c.ts.net";
 
-  // Сценарий каждого QR: ?s=<ключ> → путь в приложении.
-  // Неизвестный или пустой ключ ведёт на главную.
-  // TODO: заглушки, заменить на настоящие сценарии
-  const routes = {
-    "1": "/",
-    "2": "/join/altai",
-    "3": "/login",
-    "4": "/new",
-    "5": "/p/1",
-    "6": "/p/1/vote",
+  // QR: ?e=<эксперт 1–6>&t=<сценарий 1–6> → BASE/?login=<код эксперта>&tour=<сценарий>.
+  // Коды печатает `python -m scripts.seed_experts --url <BASE>` на машине с сервером:
+  // они зависят от backend/.experts_secret, поэтому сменилась машина — переносим сюда новые.
+  // Нет кода — эксперт попадает на вход (запасной логин expertN).
+  const codes = {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "",
+    "6": "",
   };
 
-  const id = new URLSearchParams(location.search).get("s");
-  const path = routes[id] ?? "/";
+  const q = new URLSearchParams(location.search);
+  const code = codes[q.get("e")];
+  const tour = /^[1-6]$/.test(q.get("t") ?? "") ? q.get("t") : "";
+  const path = code
+    ? "/?login=" + encodeURIComponent(code) + (tour ? "&tour=" + tour : "")
+    : "/login";
   const target = BASE.startsWith("http") ? BASE.replace(/\/$/, "") + path : BASE;
   location.replace(target);
 </script>
