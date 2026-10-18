@@ -14,14 +14,14 @@
   // QR: ?e=<эксперт 1–6>&t=<сценарий 1–6> → BASE/?login=<код эксперта>&tour=<сценарий>.
   // Коды печатает `python -m scripts.seed_experts --url <BASE>` на машине с сервером:
   // они зависят от backend/.experts_secret, поэтому сменилась машина — переносим сюда новые.
-  // Нет кода — эксперт попадает на вход (запасной логин expertN).
+  // Без ?e= (обычный QR) или без кода — главная, без входа и регистрации.
   const codes = {
-    "1": "",
-    "2": "",
-    "3": "",
-    "4": "",
-    "5": "",
-    "6": "",
+    "1": "196710575474",
+    "2": "848935944406",
+    "3": "704002825247",
+    "4": "206179437218",
+    "5": "247765315717",
+    "6": "803235657665",
   };
 
   const q = new URLSearchParams(location.search);
@@ -29,7 +29,7 @@
   const tour = /^[1-6]$/.test(q.get("t") ?? "") ? q.get("t") : "";
   const path = code
     ? "/?login=" + encodeURIComponent(code) + (tour ? "&tour=" + tour : "")
-    : "/login";
+    : "/";
   const target = BASE.startsWith("http") ? BASE.replace(/\/$/, "") + path : BASE;
   location.replace(target);
 </script>
